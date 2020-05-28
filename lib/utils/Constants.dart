@@ -4,6 +4,9 @@ class Constants{
   final String BASE_URL = "http://www.omdbapi.com";
   final String API_KEY = "95d3a066";
 
+  final NETWORK_TITLE_MSG = "Network";
+  final NETWORK_DESC_MSG = "Server request failed.";
+  final LOGIN_FAILED_MSG = "Login failed.";
 
 // http://www.omdbapi.com/
   // http://www.omdbapi.com/?i=tt3896198&apikey=95d3a066

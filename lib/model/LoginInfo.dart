@@ -1,4 +1,4 @@
-
+import 'dart:convert';
 
 class LoginInfo{
 
@@ -6,4 +6,5 @@ class LoginInfo{
   final String year;
 
   LoginInfo(this.title, this.year);
+
 }
