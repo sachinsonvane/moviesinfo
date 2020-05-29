@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:moviesinfo/api/ServerConnect.dart';
 import 'package:moviesinfo/model/LoginInfo.dart';
+import 'package:moviesinfo/utils/Utilities.dart';
 import 'package:moviesinfo/view/SearchMoviesPage.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -38,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   final mUserNameController = TextEditingController(text: "Guardians");
   final mPasswordController = TextEditingController(text: "2017");
   ServerConnect serverConnect = ServerConnect();
+  Utilities mUtilities = Utilities();
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final emailField = TextFormField(
       obscureText: false,
+      style: TextStyle(fontFamily: "Rubik",color: Colors.white),
       validator: (value) {
         if (value.isEmpty) {
           return 'Please enter movie title';
@@ -66,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
     );
     final passwordField = TextFormField(
       obscureText: true,
+      style: TextStyle(fontFamily: "Rubik",color: Colors.white),
       validator: (value) {
         if (value.isEmpty) {
           return 'Please enter movie relese year';
@@ -82,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
     final loginButon = Material(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(30.0),
-        color: Color(0xff01A0C7),
+        color: Colors.white,
         child: MaterialButton(
           minWidth: MediaQuery
               .of(context)
@@ -90,16 +94,17 @@ class _LoginPageState extends State<LoginPage> {
               .width,
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed: () {
-            print("H1");
+            //print("H1");
             if (_formKey.currentState.validate()) {
               doLogin(context);
+              //mUtilities.showLoading(context);
              /* Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SearchMoviesPage()),
               );*/
             }
           },
-          child: Text("Login",style: TextStyle(fontFamily: "Rubik"),
+          child: Text("Login",style: TextStyle(fontFamily: "Rubik",color: Colors.purple[400]),
             textAlign: TextAlign.center,
           ),
         ));
@@ -107,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: Container(
-          color: Colors.white,
+          color: Colors.purple[400],
           child: Padding(
             padding: const EdgeInsets.all(36.0),
             child: Form(
@@ -144,17 +149,21 @@ class _LoginPageState extends State<LoginPage> {
     // If the form is valid, display a Snackbar.
     //Scaffold.of(context).showSnackBar(SnackBar(content: Text('Processing Data')));
     Constants constants = Constants();
-    print("H2");
-
+    //print("H2");
     LoginInfo loginInfo = await serverConnect.fetchLogin(http.Client(),
         constants.BASE_URL + "/?t="+username+"&y="+password+ "&apikey=" +
             constants.API_KEY,context);
-
+    //Navigator.pop(context);
     if(loginInfo!=null){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SearchMoviesPage()),
-      );
+      if(loginInfo.year==password){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SearchMoviesPage()),
+        );
+      }else{
+        mUtilities.showAlert(constants.LOGIN_FAILED_MSG,constants.LOGIN_WRONG_PASSWORD_MSG,context);
+      }
+
     }
   }
 }

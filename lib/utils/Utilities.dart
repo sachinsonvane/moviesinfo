@@ -10,12 +10,13 @@ class Utilities{
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text(title,style: TextStyle(fontFamily: "Rubik"),),
-          content: new Text(msg,style: TextStyle(fontFamily: "Rubik"),),
+          backgroundColor: Colors.purple[400],
+          title: new Text(title,style: TextStyle(fontFamily: "Rubik",color: Colors.white),),
+          content: new Text(msg,style: TextStyle(fontFamily: "Rubik",color: Colors.white),),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("Close",style: TextStyle(fontFamily: "Rubik"),),
+              child: new Text("Close",style: TextStyle(fontFamily: "Rubik",color: Colors.white),),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -24,6 +25,16 @@ class Utilities{
         );
       },
     );
+  }
+
+
+  void showLoading(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(child: CircularProgressIndicator(),);
+        });
+    //Navigator.pop(context);
   }
 
 }
