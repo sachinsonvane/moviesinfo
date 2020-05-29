@@ -10,12 +10,12 @@ class Utilities{
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text(title),
-          content: new Text(msg),
+          title: new Text(title,style: TextStyle(fontFamily: "Rubik"),),
+          content: new Text(msg,style: TextStyle(fontFamily: "Rubik"),),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("Close"),
+              child: new Text("Close",style: TextStyle(fontFamily: "Rubik"),),
               onPressed: () {
                 Navigator.of(context).pop();
               },

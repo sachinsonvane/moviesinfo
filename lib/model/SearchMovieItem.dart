@@ -5,6 +5,7 @@ class SearchMovieItem{
   final String year;
   final String type;
   final String poster;
+  final String totalResults;
 
-  SearchMovieItem(this.title, this.year,this.type,this.poster);
+  SearchMovieItem(this.title, this.year,this.type,this.poster,this.totalResults);
 }

@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
               );*/
             }
           },
-          child: Text("Login",
+          child: Text("Login",style: TextStyle(fontFamily: "Rubik"),
             textAlign: TextAlign.center,
           ),
         ));

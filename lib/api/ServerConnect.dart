@@ -57,16 +57,20 @@ class ServerConnect{
       // If the server did return a 200 OK response,
       // then parse the JSON.
       var data = json.decode(response.body);
-      var res = data["Search"] as List;
-
-      for(Map<String,dynamic> obj in res){
-
-        var title = obj["Title"] as String;
-        var year = obj["Year"] as String;
-        var type = obj["Type"] as String;
-        var poster = obj["objPoster"] as String;
-
-        searchMevItemList.add(SearchMovieItem(title,year,type,poster));
+      var resErr = data["Response"] as String;
+      if(resErr=="True"){
+        var res = data["Search"] as List;
+        var totalResults = data["totalResults"] as String;
+        for(Map<String,dynamic> obj in res){
+          var title = obj["Title"] as String;
+          var year = obj["Year"] as String;
+          var type = obj["Type"] as String;
+          var poster = obj["Poster"] as String;
+          searchMevItemList.add(SearchMovieItem(title,year,type,poster,totalResults));
+        }
+      }else{
+        var errorMsg = data["Error"] as String;
+        utilities.showAlert(constants.SEARCH_FAILED_MSG,errorMsg,context);
       }
 
       return searchMevItemList;

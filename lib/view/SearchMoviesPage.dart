@@ -22,10 +22,13 @@ class _SearchMoviesPage extends State<SearchMoviesPage>{
   final mSearchTxtController = TextEditingController(text: "Guardians");
   ServerConnect mServerConnect = ServerConnect();
   var mRefreshkey = GlobalKey<RefreshIndicatorState>();
-
+  var mPagePosition = 1;
+  var mPageCount = 0;
   Utilities mUtilities = Utilities();
   String mSearchType = "NONE";
+  String mPageDropItemVal = "1";
   List<SearchMovieItem> mAllSearchMovies = [];
+  List<String> mPageArr = [];
 
   Future<Null> _refreshContent() async{
     print('refreshing stocks...');
@@ -48,9 +51,8 @@ class _SearchMoviesPage extends State<SearchMoviesPage>{
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Search by title",
-
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
     );
 
     return Scaffold(
@@ -74,7 +76,7 @@ class _SearchMoviesPage extends State<SearchMoviesPage>{
 
                     new DropdownButton<String>(
                       value: mSearchType,
-                      icon: Icon(Icons.arrow_downward),
+                      icon: Icon(Icons.list),
                       iconSize: 24,
                       elevation: 16,
                       style: TextStyle(color: Colors.deepPurple),
@@ -91,7 +93,7 @@ class _SearchMoviesPage extends State<SearchMoviesPage>{
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(value,style: TextStyle(fontFamily: "Rubik"),),
                         );
                       }).toList(),
                     ),
@@ -101,7 +103,7 @@ class _SearchMoviesPage extends State<SearchMoviesPage>{
                     ),
                     SizedBox(width: 45.0),
                     Material(
-                      color: Colors.white,
+                      color: Colors.transparent,
                       child: Center(
                         child: Ink(
                           decoration: const ShapeDecoration(
@@ -130,87 +132,51 @@ class _SearchMoviesPage extends State<SearchMoviesPage>{
             ),
           ),
 
+          SliverList(
+          delegate: SliverChildListDelegate(
+          [
+              Container(
+              padding: EdgeInsets.only(left: 16.0,right: 16.0),
+              child:Row(
+                children: <Widget>[
+                  Text("Search Result : $mPagePosition / $mPageCount",style: TextStyle(fontFamily: "Rubik"),),
+                  SizedBox(width: 16.0),
+                  Text("Current Page : ",style: TextStyle(fontFamily: "Rubik"),),
+                  new DropdownButton<String>(
+                    value: mPageDropItemVal,
+                    icon: Icon(Icons.list),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        mPageDropItemVal = newValue;
+                        if (_formKey.currentState.validate()) {
+                          doSearch(context);
+                        }
+                      });
+                    },
+                    items: mPageArr.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value,style: TextStyle(fontFamily: "Rubik"),),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              )
+              )
+          ])
+          ),
+
           getGridView(),
 
         ]
       )))
-
-
-      /*
-      Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-
-                  Row(
-                    children: <Widget>[
-
-                      new DropdownButton<String>(
-                          value: mSearchType,
-                          icon: Icon(Icons.arrow_downward),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: TextStyle(color: Colors.deepPurple),
-                          underline: Container(
-                            height: 2,
-                            color: Colors.deepPurpleAccent,
-                          ),
-                          onChanged: (String newValue) {
-                            setState(() {
-                              mSearchType = newValue;
-                            });
-                          },
-                          items: <String>['NONE','movie', 'series', 'episode']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      SizedBox(width: 45.0),
-                      Expanded(
-                          child: searchTxtField
-                      ),
-                      SizedBox(width: 45.0),
-                       Material(
-                          color: Colors.white,
-                          child: Center(
-                            child: Ink(
-                              decoration: const ShapeDecoration(
-                                color: Colors.lightBlue,
-                                shape: CircleBorder(),
-                              ),
-                              child: IconButton(
-                                icon: Icon(Icons.search),
-                                color: Colors.white,
-                                onPressed: () {
-                                  if (_formKey.currentState.validate()) {
-                                    doSearch(context);
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-
-
-                    ],
-                  ),
-
-                  SizedBox(
-                    height: 15.0,
-                  ),
-
-
-                ],
-              ),),
-          ),
-        ), */
 
     );
   }
@@ -222,33 +188,68 @@ class _SearchMoviesPage extends State<SearchMoviesPage>{
         delegate: SliverChildListDelegate(
           [
             Container(
+                padding: EdgeInsets.all(16.0),
                 alignment: Alignment.center,
                 color: Colors.teal[100],
-                child: Text('Record not found.',style: TextStyle(color: Colors.red[400]),),
+                child: Text('Record not found.',style: TextStyle(fontFamily: "Rubik",color: Colors.red[400],fontSize: 20),),
             ),
           ],
         ),
       );
     }else {
+
+
       return SliverGrid(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200.0,
+          maxCrossAxisExtent: 300.0,
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 10.0,
-          childAspectRatio: 4.0,
+          //childAspectRatio: 4.0,
+
         ),
         delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
             return Container(
               alignment: Alignment.center,
-              color: Colors.teal[100 * (index % 9)],
-              child: Text('grid item'+mAllSearchMovies[index].title),
+              padding: EdgeInsets.all(10.0),
+              color: Colors.purple[400],
+              child:Column(
+                children: <Widget>[
+                  //Image.network(mAllSearchMovies[index].poster),
+                  getImageView(mAllSearchMovies[index].poster),
+                  SizedBox(height: 7.0),
+                  Text('grid item'+mAllSearchMovies[index].title,overflow: TextOverflow.ellipsis,style: TextStyle(fontFamily: "Rubik",color: Colors.white,fontSize: 16),textAlign: TextAlign.center,),
+                  SizedBox(height: 7.0),
+                  Text('Release on '+mAllSearchMovies[index].year,overflow: TextOverflow.ellipsis,style: TextStyle(fontFamily: "Rubik",color: Colors.white),textAlign: TextAlign.center,),
+                ],
+              ) //Text('grid item'+mAllSearchMovies[index].title),
             );
           },
           childCount: mAllSearchMovies.length,
         ),
       );
     }
+  }
+
+  Widget getImageView(String url){
+
+    if(url==null||url==""||url=="N/A"){
+      return Container(
+        color: Colors.white,
+        width: 100,
+        height: 100,
+        child: Center(child:Text("No Image",style: TextStyle(fontFamily: "Rubik",color: Colors.red[400]),)),
+      );
+    }else{
+      return Image.network(
+        url,
+        cacheHeight: 100,
+        cacheWidth: 100,
+        width: 100,
+        height: 100,
+      );
+    }
+
   }
 
   Future<void> doSearch(context) async{
@@ -264,14 +265,31 @@ class _SearchMoviesPage extends State<SearchMoviesPage>{
 
       mUtilities.showAlert("Search Type", "Select search type.", context);
     }else{
-      var url = constants.BASE_URL + "/?s="+searchTxt+"&type="+mSearchType+"&apikey=" +constants.API_KEY;
+      var url = constants.BASE_URL + "/?s="+searchTxt+"&type="+mSearchType+"&page="+mPageDropItemVal+"&apikey=" +constants.API_KEY;
       print("url "+url);
-      mAllSearchMovies = await mServerConnect.fetchSearchMovies(http.Client(),url,context);
-
-      print("mAllSearchMovies "+mAllSearchMovies.length.toString());
-      if(mAllSearchMovies!=null){
-        mRefreshkey.currentState?.show();
+      mPagePosition = int.parse(mPageDropItemVal);
+      List<SearchMovieItem> list = await mServerConnect.fetchSearchMovies(http.Client(),url,context);
+      if(list!=null){
+        if(list.length>0){
+          var m = int.parse(list[0].totalResults.toString());
+          var d = (m / 10);
+          var n = d.toInt();
+          mPageArr = [];
+          mPageDropItemVal = mPagePosition.toString();
+          for(int i =1 ;i<d; i++){
+            mPageArr.add("$i");
+          }
+          setState(() {
+            mPageArr = mPageArr;
+            mPageCount = n;
+          });
+        }
+        setState(() {
+          mAllSearchMovies = list;
+        });
       }
+      print("mAllSearchMovies "+mAllSearchMovies.length.toString());
+
     }
   }
 

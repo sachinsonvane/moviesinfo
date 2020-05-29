@@ -44,6 +44,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  fonts:
+    - family: Rubik
+      fonts:
+        - asset: fonts/Rubik-Bold.ttf
+        - asset: fonts/Rubik-Italic.ttf
+        - asset: fonts/Rubik-Regular.ttf
+        - asset: fonts/Rubik-Medium.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
