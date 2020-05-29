@@ -7,6 +7,7 @@ class Constants{
   final NETWORK_TITLE_MSG = "Network";
   final NETWORK_DESC_MSG = "Server request failed.";
   final LOGIN_FAILED_MSG = "Login failed.";
+  final SEARCH_FAILED_MSG = "Search failed.";
 
 // http://www.omdbapi.com/
   // http://www.omdbapi.com/?i=tt3896198&apikey=95d3a066
@@ -80,6 +81,67 @@ Miller (screenplay by), Dan Hageman (story by),
     {"Title":"Rise of the Guardians","Year":"2012","imdbID":"tt1446192","Type":"movie","Poster":"https://m.media-amazon.com/images/M/MV5BMTkzMjgwMDg1M15BMl5BanBnXkFtZTcwMTgzNTI1OA@@._V1_SX300.jpg"},
     {"Title":"Legend of the Guardians: The Owls of Ga'Hoole","Year":"2010","imdbID":"tt1219342","Type":"movie","Poster":"https://m.media-amazon.com/images/M/MV5BMjE0NjA5OTA4N15BMl5BanBnXkFtZTcwODA3MTA3Mw@@._V1_SX300.jpg"},
     {"Title":"Guardians","Year":"2017","imdbID":"tt4600952","Type":"movie","Poster":"https://m.media-amazon.com/images/M/MV5BYzgxY2NkZGYtOGI4NC00MTc4LTlkY2QtNmRjOTU1NDI0NGQ1XkEyXkFqcGdeQXVyNTc4MjczMTM@._V1_SX300.jpg"},{"Title":"7 Guardians of the Tomb","Year":"2018","imdbID":"tt4915672","Type":"movie","Poster":"https://m.media-amazon.com/images/M/MV5BZjMzZDI4YmEtZDIwNS00YWQ5LTkzN2UtMzJiMTliNjZiMzRjXkEyXkFqcGdeQXVyMzQwMTY2Nzk@._V1_SX300.jpg"},{"Title":"Naruto the Movie 3: Guardians of the Crescent Moon Kingdom","Year":"2006","imdbID":"tt1071815","Type":"movie","Poster":"https://m.media-amazon.com/images/M/MV5BNjk2ZWIzOTYtMGUxMC00MzdhLWI3ZGMtZGJhNzZmMDYxYjJlXkEyXkFqcGdeQXVyMjQ3NTQ4MjQ@._V1_SX300.jpg"},{"Title":"Guardians of the Galaxy","Year":"2015–","imdbID":"tt4176370","Type":"series","Poster":"https://m.media-amazon.com/images/M/MV5BNDM4NDQxMDU2MV5BMl5BanBnXkFtZTgwMDY2MDQ5NjE@._V1_SX300.jpg"},{"Title":"Halo 5: Guardians","Year":"2015","imdbID":"tt3467114","Type":"game","Poster":"https://m.media-amazon.com/images/M/MV5BMjAzMjIzMjY4OF5BMl5BanBnXkFtZTgwNDM5NzQxNzE@._V1_SX300.jpg"},{"Title":"The Guardians","Year":"2017","imdbID":"tt6213362","Type":"movie","Poster":"https://m.media-amazon.com/images/M/MV5BNjdkZmU1MzEtNjQ4OC00ZWM3LWIwNGUtZmM1MjBjYTI2M2E0XkEyXkFqcGdeQXVyNDU0NjMyNTQ@._V1_SX300.jpg"}],"totalResults":"161","Response":"True"}
+
+ */
+/*
+    Material(
+      color: Colors.white,
+      child: Center(
+        child: Ink(
+          decoration: const ShapeDecoration(
+            color: Colors.lightBlue,
+            shape: CircleBorder(),
+          ),
+          child: IconButton(
+            icon: Icon(Icons.android),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+        ),
+      ),
+    );
+
+Container(
+    child: CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              HeaderWidget("Header 1"),
+              HeaderWidget("Header 2"),
+              HeaderWidget("Header 3"),
+              HeaderWidget("Header 4"),
+            ],
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              BodyWidget(Colors.blue),
+              BodyWidget(Colors.red),
+              BodyWidget(Colors.green),
+              BodyWidget(Colors.orange),
+              BodyWidget(Colors.blue),
+              BodyWidget(Colors.red),
+            ],
+          ),
+        ),
+        SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          delegate: SliverChildListDelegate(
+            [
+              BodyWidget(Colors.blue),
+              BodyWidget(Colors.green),
+              BodyWidget(Colors.yellow),
+              BodyWidget(Colors.orange),
+              BodyWidget(Colors.blue),
+              BodyWidget(Colors.red),
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
 
  */
 }

@@ -1,5 +1,6 @@
 
 import 'package:moviesinfo/model/LoginInfo.dart';
+import 'package:moviesinfo/model/SearchMovieItem.dart';
 import 'package:moviesinfo/utils/Constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,41 @@ class ServerConnect{
       }
 
       return loginInfo;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      utilities.showAlert(constants.NETWORK_TITLE_MSG,constants.NETWORK_DESC_MSG,context);
+      return null;
+    }
+  }
+
+  Future<List<SearchMovieItem>> fetchSearchMovies(http.Client client,String cUrl,context) async {
+
+    Constants constants = Constants();
+    Utilities utilities = Utilities();
+    //http://www.omdbapi.com/?s=Guardians&apikey=95d3a066
+    //http://www.omdbapi.com/?s=Guardians&type=movie&apikey=95d3a066
+    final response = await http.get(cUrl);
+    print("S4 "+response.body.toString());
+    print("S5 code "+response.statusCode.toString());
+    List<SearchMovieItem> searchMevItemList = [];
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      var data = json.decode(response.body);
+      var res = data["Search"] as List;
+
+      for(Map<String,dynamic> obj in res){
+
+        var title = obj["Title"] as String;
+        var year = obj["Year"] as String;
+        var type = obj["Type"] as String;
+        var poster = obj["objPoster"] as String;
+
+        searchMevItemList.add(SearchMovieItem(title,year,type,poster));
+      }
+
+      return searchMevItemList;
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.

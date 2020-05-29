@@ -93,6 +93,10 @@ class _LoginPageState extends State<LoginPage> {
             print("H1");
             if (_formKey.currentState.validate()) {
               doLogin(context);
+             /* Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchMoviesPage()),
+              );*/
             }
           },
           child: Text("Login",
